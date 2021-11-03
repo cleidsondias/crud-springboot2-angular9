@@ -1,4 +1,4 @@
-package br.com.ignisinventum.cadastroveicular.model;
+package br.com.ignisinventum.cadastroveicular.entity;
 
 import java.io.Serializable;
 

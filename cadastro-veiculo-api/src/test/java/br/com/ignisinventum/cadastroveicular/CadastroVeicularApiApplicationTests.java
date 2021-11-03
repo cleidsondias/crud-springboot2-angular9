@@ -9,14 +9,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import br.com.ignisinventum.cadastroveicular.controller.VeiculoRest;
-import br.com.ignisinventum.cadastroveicular.model.Veiculo;
+import br.com.ignisinventum.cadastroveicular.entity.Veiculo;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, properties = {
 		"spring.h2.console.enabled=true", "spring.h2.console.path=/console" })
+@TestPropertySource(locations="classpath:application-test.properties")
 public class CadastroVeicularApiApplicationTests {
 
 	@Autowired
@@ -35,10 +37,9 @@ public class CadastroVeicularApiApplicationTests {
 	
 	@Test
 	public void getFind() {
-		Map<String, Object> atributos = new HashMap<String, Object>();
-		atributos.put("marca", "VOLKSWAGEN");
-		atributos.put("vendido", true);
-		assertTrue(rest.buscarPorParametros(atributos).getBody().size() > 0);
+		Veiculo v  = new Veiculo();
+		v.setVendido(false);
+		assertTrue(rest.buscarPorParametros(v).getBody().size() > 0);
 	}
 	
 	@Test

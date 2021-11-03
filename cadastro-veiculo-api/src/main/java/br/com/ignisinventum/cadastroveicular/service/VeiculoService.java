@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import br.com.ignisinventum.cadastroveicular.model.Veiculo;
+import br.com.ignisinventum.cadastroveicular.entity.Veiculo;
 import br.com.ignisinventum.cadastroveicular.repository.VeiculoRepository;
 
 @Service

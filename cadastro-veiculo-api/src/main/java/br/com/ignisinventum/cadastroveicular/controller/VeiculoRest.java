@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ignisinventum.cadastroveicular.model.Veiculo;
+import br.com.ignisinventum.cadastroveicular.entity.Veiculo;
 import br.com.ignisinventum.cadastroveicular.service.VeiculoService;
 import io.swagger.annotations.Api;
 
@@ -45,12 +44,9 @@ public class VeiculoRest {
 	}
 	
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping(value="/find")
-	public ResponseEntity<List<Veiculo>> buscarPorParametros(@RequestParam Map<String, Object> q ) {
-		ModelMapper modelMapper = new ModelMapper();
-		Veiculo ex = new Veiculo();
-		modelMapper.map(q, ex);		
-		return ResponseEntity.ok().body(service.buscarTodosPorExemplo(ex));
+	@PostMapping(value="/find")
+	public ResponseEntity<List<Veiculo>> buscarPorParametros(@RequestBody Veiculo veiculo) {
+		return ResponseEntity.ok().body(service.buscarTodosPorExemplo(veiculo));
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
@@ -62,8 +58,6 @@ public class VeiculoRest {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@PutMapping("/{id}")
 	public ResponseEntity<Veiculo> atualizar(@PathVariable("id") Integer id, @RequestBody Veiculo veiculo) {
-		Veiculo ex = new Veiculo();
-		ex.setId(id);
 		return ResponseEntity.ok().body(service.buscarPorId(id).map(v->{
 			v.setAno(veiculo.getAno());
 			v.setDescricao(veiculo.getDescricao());

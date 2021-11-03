@@ -1,20 +1,41 @@
 version: '3.7'
 
+volumes:
+  postgresql-volume:
+  
 services:
-
-  app-server-veiculos:
+  db:
+    image: 'postgres:13.1-alpine'
+    restart: always
+    container_name: db   
+    volumes:
+      - postgresql-volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=compose-postgres
+      - POSTGRES_PASSWORD=compose-postgres
+    
+  app-backend:
     build:
       context: cadastro-veiculo-api
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-        
-  app-client-veiculos:
-    build:
-      context: cadastro-veiculo-app
-      dockerfile: Dockerfile
-    ports:
-      - '4200:80'
     restart: always
     depends_on:
-      - app-server-veiculos
+      - db
+    environment:
+      - SPRING_DATASOURCE_DRIVERCLASSNAME=org.postgresql.Driver
+      - SPRING_DATASOURCE_PLATAFORM=org.hibernate.dialect.PostgreSQL95Dialect
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USER=compose-postgres
+      - SPRING_DATASOURCE_PWD=compose-postgres
+      
+#  app-frontend:
+#    build:
+#      context: cadastro-veiculo-app
+#      dockerfile: Dockerfile
+#    ports:
+#      - '4200:80'
+#    restart: always
+#    depends_on:
+#      - app-backend
